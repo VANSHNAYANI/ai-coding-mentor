@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 const MODES = [
   {
     id: "explain",
@@ -124,7 +126,7 @@ export default function App() {
   const scrollDown = () => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
 
   useEffect(() => {
-    fetch("/api/history")
+   fetch(`${API_URL}/api/history`)
       .then((r) => r.json())
       .then((d) => setMessages(d.map((m) => ({ role: m.role, content: m.content, fresh: false }))))
       .catch(() => {});
@@ -146,7 +148,7 @@ export default function App() {
     setInput("");
     setLoading(true);
     try {
-      const r = await fetch("/api/chat", {
+      const r = await fetch(`${API_URL}/api/chat`,  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, mode }),
@@ -165,10 +167,10 @@ export default function App() {
     setLoading(false);
   }
 
-  async function clearChat() {
-    await fetch("/api/history", { method: "DELETE" });
-    setMessages([]);
-  }
+async function clearChat() {
+  await fetch(`${API_URL}/api/history`, { method: "DELETE" });
+  setMessages([]);
+}
 
   const current = MODES.find((m) => m.id === mode);
 
