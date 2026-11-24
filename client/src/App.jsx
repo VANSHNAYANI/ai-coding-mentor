@@ -123,7 +123,9 @@ export default function App() {
   const endRef = useRef(null);
   const taRef = useRef(null);
 
-  const scrollDown = () => endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  const scrollDown = () => {
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
 
   useEffect(() => {
    fetch(`${API_URL}/api/history`)
